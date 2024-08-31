@@ -1,0 +1,15 @@
+[Unit]
+Description=Minecraft Bedrock Server
+After=network.target local-fs.target
+
+[Service]
+Type=simple
+User=minecraft
+Group=minecraft
+WorkingDirectory=/opt/minecraft/bedrock-server
+Environment=LD_LIBRARY_PATH=/opt/minecraft/bedrock-server
+ExecStart=/opt/minecraft/bedrock-server/bedrock_server
+Restart=yes
+
+[Install]
+WantedBy=multi-user.target

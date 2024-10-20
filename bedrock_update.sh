@@ -34,7 +34,7 @@ else
   cp ./allowlist.json ./backup/allowlist.json
 
   # Get new bedrock server zip file from the official web site
-  wget -q ${URL}
+  curl -s -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" -O ${URL}
 
   # extract the downloaded zip file and overwrite the existing files
   unzip -o ${URL##*/} 2>&1 > /dev/null
@@ -42,7 +42,7 @@ else
   # Return config files which were backup in advance
   cp ./backup/server.properties ./server.properties
   cp ./backup/permissions.json ./permissions.json
-  cp ./backup/allowlist.json .allowlist.json
+  cp ./backup/allowlist.json ./allowlist.json
 
   # Start bedrock service
   sudo systemctl start bedrock

@@ -7,17 +7,17 @@
 # Specify the directory which holds your Bedrock server files
 BEDROCK_SERVER_DIR=/opt/minecraft/bedrock-server
 
+# Store the directory where the scripts exist
+SCRIPT_DIR=`dirname $(readlink -f $0)`
+
 # The scripts start here. Do not change from here.
 cd $BEDROCK_SERVER_DIR
 
 # Create a "backup" directly if it does not exist
 mkdir -p backup
 
-# Randomizer for user agent
-RandNum=$(echo $((1 + $RANDOM % 5000)))
-
 # Pickup URL to download stable bedrock server only
-URL=`curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.33 (KHTML, like Gecko) Chrome/90.0.$RandNum.212 Safari/537.33" https://minecraft.net/en-us/download/server/bedrock/ 2>/dev/null | grep bin-linux/ | sed -e 's/.*<a href=\"\(https:.*\/bin-linux\/.*\.zip\).*/\1/'`
+URL=`bash $SCRIPT_DIR/get_download_url.sh`
 
 # Verify if the DOWNLOAD and SERVER destinations exist. Create if it doesn't
 if [ -z "$URL" ] ; then
@@ -34,7 +34,6 @@ fi
 
 if [ -f ./${URL##*/} ]; then
   echo "New version of Bedrock server was gotten downloaded. Trying to update..."
-  SCRIPT_DIR=`dirname $(readlink -f $0)`
   bash $SCRIPT_DIR/upgrade_bedrock_install.sh ${URL##*/}
 else
   echo "Failed to download the latest Bedrock server. Exiting."
